@@ -24,9 +24,9 @@ while !user_input.eql? 'EXIT'
     break  
  else
   if user_input.strip.upcase =~ /PLACE\s\d,\d,\w*/
-    puts "user input: #{user_input}"
+
     inputs=user_input.strip.upcase.scan(/PLACE\s(.*?),(.*?),(.*)/).first
-    puts "place command: #{inputs.inspect}"
+
     robo.place(inputs[0].to_i,inputs[1].to_i,inputs[2])
   else
     puts "Unknown Command!Use one of the commands MOVE,LEFT,RIGHT,REPORT,PLACE or EXIT"

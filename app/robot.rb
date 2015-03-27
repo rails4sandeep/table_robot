@@ -27,7 +27,7 @@ class Robot
         @y=y
         @face=face
         @on_table=true if !@on_table
-        puts "place command fired"
+
       end
     else
       puts "Invalid Input!Command Ignored"
