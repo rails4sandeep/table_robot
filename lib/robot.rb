@@ -1,6 +1,5 @@
 class Robot
   attr_accessor :x,:y,:face,:valid_rows,:valid_columns,:valid_faces,:on_table
-
   def initialize(rows,columns,faces)
     @valid_rows=rows
     @valid_columns=columns
@@ -11,27 +10,10 @@ class Robot
 
   def place(x,y,face)
     puts "Valid Rows: #{@valid_rows} Valid Columns: #{@valid_columns}"
-    invalid_flag=false
-    if x.class==Fixnum && y.class==Fixnum && face.class==String
-      if x<=0 || x >@valid_rows
-        invalid_flag=true
-      elsif y<=0 || y>@valid_columns
-        invalid_flag=true
-      elsif !@valid_faces.include? face
-        invalid_flag=true
-      end
-      if invalid_flag
-        puts "FATAL!Command Ignored"
-      else
         @x=x
         @y=y
         @face=face
         @on_table=true if !@on_table
-
-      end
-    else
-      puts "Invalid Input!Command Ignored"
-    end
   end
 
   def move
@@ -66,7 +48,7 @@ class Robot
       puts "Command Ignored!Robot not on table"
     end
   end
-
+  
   def left
     if @on_table
       case @face
@@ -83,7 +65,7 @@ class Robot
       puts "Command Ignored!Robot not on table"
     end
   end
-
+  
   def right
     if @on_table
       case @face
@@ -100,14 +82,57 @@ class Robot
       puts "Command Ignored!Robot not on table"
     end
   end
-
+  
   def report
     if @on_table
       puts "X: #{@x},Y: #{@y},FACE: #{@face}"
     else
       puts "Command Ignored!Robot not on table"
     end
+  end
+  
+  def accept_and_sanitize_commands
+    user_input=''
+    while !user_input.eql? 'EXIT'
+      puts "\ncommand>"
+      user_input=gets
+      case user_input.strip.upcase
+      when 'MOVE'
+       move
+     when 'LEFT'
+       left
+     when 'RIGHT'
+       right
+     when 'REPORT'
+       report
+     when 'EXIT'
+      break  
+    else
+      if user_input.strip.upcase =~ /PLACE\s\d,\d,\w*/
+        inputs=user_input.strip.upcase.scan(/PLACE\s(.*?),(.*?),(.*)/).first
+        if inputs[0].to_i.class==Fixnum && inputs[1].to_i.class==Fixnum && inputs[2].class==String
+          if inputs[0].to_i<=0 || inputs[0].to_i >@valid_rows
+            invalid_flag=true
+          elsif inputs[1].to_i<=0 || inputs[1].to_i>@valid_columns
+            invalid_flag=true
+          elsif !@valid_faces.include? inputs[2]
+            invalid_flag=true
+          end
+          if invalid_flag
+            puts "FATAL!Command Ignored"
+          else
+            place(inputs[0].to_i,inputs[1].to_i,inputs[2])
+          end
+        else
+          puts "Invalid Input!Command Ignored"
+        end
 
+      else
+        puts "Unknown Command!Use one of the commands MOVE,LEFT,RIGHT,REPORT,PLACE or EXIT"
+      end
+    end
   end
 
+
+end
 end
