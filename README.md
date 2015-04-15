@@ -84,28 +84,28 @@ REPORT
 Output: 3,3,NORTH
 
 #Installation
-gem install table_robot
+`gem install table_robot`
 
 or include
 
-gem 'table_robot'
+`gem 'table_robot'`
 
 in your Gemfile
 
 #Usage
 create the table
 
-@square_table=TableRobot.create_table(5,5)
+`@square_table=TableRobot.create_table(5,5)`
 
 create the robot
 
-@robo=TableRobot.create_robot(@square_table.rows,@square_table.columns,['NORTH','EAST','WEST','SOUTH'])
+`@robo=TableRobot.create_robot(@square_table.rows,@square_table.columns,['NORTH','EAST','WEST','SOUTH'])`
 
 To play with the interactive commandline shell as outlined in the coding challenge
 
-@robo.accept_commandline_inputs
+`@robo.accept_commandline_inputs`
 
 #tests
 To run all the tests
 
-rake tests
+`rake tests`
