@@ -1,5 +1,5 @@
-require_relative 'table'
-require_relative 'robot'
+require_relative 'table_robot/table'
+require_relative 'table_robot/robot'
 
 module TableRobot
 
