@@ -1,0 +1,3 @@
+<% common = "-r features --color --format pretty --format html -o reports/results.html --format junit -o reports/junit LOGDIR=./reports/" %>
+tests:  <%= common %>
+        --tags @robot_scenarios
