@@ -105,7 +105,21 @@ To play with the interactive commandline shell as outlined in the coding challen
 
 `@robo.accept_commandline_inputs`
 
-#tests
+##Commandline Interface
+
+The commandline interface prompts the user to enter a command
+`command>`
+If the command is one of the commands defined in the coding challenge `PLACE,REPORT,MOVE,LEFT` and `RIGHT`, it processes them.
+
+The commandline interface is case insensitive.
+
+Until a valid `PLACE` command is entered all other commands are ignored.
+
+A `REPORT` command returns the current position of the robot on the table
+
+The `MOVE`,`LEFT` and `RIGHT` commands moves the robot on the table as defined in the coding challenge as long as the robot do not fall off the table processing them.
+
+#Tests
 To run all the tests
 
 `rake tests`
