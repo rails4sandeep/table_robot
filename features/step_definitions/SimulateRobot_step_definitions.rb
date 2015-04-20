@@ -1,10 +1,12 @@
 Given /^I have a table of size\s(.*?)by\s(.*?)$/ do |x,y|
-  @square_table=Table.new(x.to_i,y.to_i)
+
+  @square_table=TableRobot.create_table(x.to_i,y.to_i)
 end
 
 And /^a robot that can move on it$/ do
-  @robo=Robot.new(@square_table.rows,@square_table.columns,['NORTH','EAST','WEST','SOUTH'])
+  @robo=TableRobot.create_robot(@square_table.rows,@square_table.columns,['NORTH','EAST','WEST','SOUTH'])
 end
+
 When /^I send a place command with entries (.*?),(.*?) and facing (.*?)$/ do |x,y,face|
   $stdout=StringIO.new #if command.eql? 'report'
   puts "#{$stdout.inspect}"
@@ -12,19 +14,26 @@ When /^I send a place command with entries (.*?),(.*?) and facing (.*?)$/ do |x,
   @robo.place(x.to_i,y.to_i,face.chomp)
 end
 
+When /^I send a place command with entries (.*?)$/ do |place_command|
+  $stdout=StringIO.new #if command.eql? 'report'
+  puts "#{$stdout.inspect}"
+  $stdout.string
+  @robo.process_user_input(place_command)
+end
+
 Then /^the robot should ignore the commands$/ do
   @robo.on_table.should_not==true
 end
 
 When /^I send a (.*?) before sending the place command$/ do |command|
-  @robo.send(command)
+  @robo.process_user_input(command)
 end
 
 When /^I send the (.*?) command$/ do |command|
   @x_before=@robo.x
   @y_before=@robo.y
   @face_before=@robo.face
-  @robo.send(command)
+  @robo.process_user_input(command)
 end
 
 Then /^the robot should ignore the command$/ do
@@ -48,5 +57,4 @@ Then /^the position of robot should be printed on screen$/ do
   ($stdout.string.include? @robo.x.to_s).should==true
   ($stdout.string.include? @robo.y.to_s).should==true
   ($stdout.string.include? @robo.face.to_s).should==true
-
 end
