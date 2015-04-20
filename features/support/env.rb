@@ -1,5 +1,5 @@
 require 'cucumber'
 require 'rspec'
-require_relative '../../app/robot'
-require_relative '../../app/table'
+require_relative '../../lib/table_robot'
 
+include TableRobot
