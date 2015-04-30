@@ -5,7 +5,6 @@ class Robot
     @valid_columns=columns
     @valid_faces=faces
     @on_table=false
-    puts "object created.R:#{@valid_rows},C:#{@valid_columns},F:#{@valid_faces},T:#{@on_table}"
   end
 
   def place(x,y,face)
@@ -91,6 +90,26 @@ class Robot
     end
   end
 
+  def process_place_command(user_input)
+    inputs=user_input.scan(/PLACE\s(.*?),(.*?),(.*)/).first
+    if inputs[0].to_i.class==Fixnum && inputs[1].to_i.class==Fixnum && inputs[2].class==String
+      if inputs[0].to_i<=0 || inputs[0].to_i >@valid_rows
+        invalid_flag=true
+      elsif inputs[1].to_i<=0 || inputs[1].to_i>@valid_columns
+        invalid_flag=true
+      elsif !@valid_faces.include? inputs[2]
+        invalid_flag=true
+      end
+      if invalid_flag
+        puts "FATAL!Command Ignored"
+      else
+        place(inputs[0].to_i,inputs[1].to_i,inputs[2])
+      end
+    else
+      puts "Invalid Input!Command Ignored"
+    end
+  end
+
   def process_user_input(user_input)
       case user_input.strip.upcase
       when 'MOVE'
@@ -103,24 +122,7 @@ class Robot
        report
     else
       if user_input =~ /PLACE\s\d,\d,\w*/
-        inputs=user_input.scan(/PLACE\s(.*?),(.*?),(.*)/).first
-        if inputs[0].to_i.class==Fixnum && inputs[1].to_i.class==Fixnum && inputs[2].class==String
-          if inputs[0].to_i<=0 || inputs[0].to_i >@valid_rows
-            invalid_flag=true
-          elsif inputs[1].to_i<=0 || inputs[1].to_i>@valid_columns
-            invalid_flag=true
-          elsif !@valid_faces.include? inputs[2]
-            invalid_flag=true
-          end
-          if invalid_flag
-            puts "FATAL!Command Ignored"
-          else
-            place(inputs[0].to_i,inputs[1].to_i,inputs[2])
-          end
-        else
-          puts "Invalid Input!Command Ignored"
-        end
-
+        process_place_command(user_input)
       else
         puts "Unknown Command!Use one of the commands MOVE,LEFT,RIGHT,REPORT,PLACE or EXIT"
       end
